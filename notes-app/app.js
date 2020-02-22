@@ -1,3 +1,6 @@
-const utils = require("./utils");
+const chalk = require("chalk");
+const getNotes = require("./notes");
+const yargs = require("yargs");
 
-console.log(utils.add(2, 3));
+console.log(process.argv);
+console.log(yargs.argv);

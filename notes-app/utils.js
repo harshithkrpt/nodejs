@@ -1,4 +1,4 @@
-const name = "Harshith";
+const name = "harshith";
 
 const add = (a, b) => {
   return a + b;

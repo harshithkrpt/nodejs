@@ -1,3 +1,5 @@
-const utils = require("./utils");
+const validator = require("validator");
+const notes = require("./notes");
+const chalk = require("chalk");
 
-console.log(utils.add(2, 3));
+console.log(chalk.green.bold.bgBlack("Success"));

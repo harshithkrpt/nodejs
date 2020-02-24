@@ -1,7 +1,7 @@
 const path = require("path");
 const birds = require("../routes/hello");
 
-// Routing
+// Routing in Nodejs
 
 // app.METHOD(PATH,HANDLER)
 

@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const Task = require("./Task");
+
+const { Schema } = mongoose;
 
 const User = new Schema({
   name: {
@@ -24,8 +27,42 @@ const User = new Schema({
     type: String,
     required: true,
     trim: true
-  }
+  },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
+
+// Virtual Property
+User.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "owner"
+});
+
+User.methods.toJSON = function() {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  delete userObject.tokens;
+  return userObject;
+};
+
+User.methods.generateAuthToken = async function() {
+  const user = this;
+
+  const token = jwt.sign({ _id: user.id.toString() }, "privatekey");
+
+  // Store in Tokens Database
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+  return token;
+};
 
 User.statics.findByCredentials = async function(email, password) {
   const user = await this.findOne({ email });
@@ -51,6 +88,13 @@ User.pre("save", async function(next) {
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
   }
+  next();
+});
+
+// DELETE USER TASKS WHEN USER IS DELETED
+User.pre("remove", async function(next) {
+  const user = this;
+  await Task.deleteMany({ owner: user._id });
   next();
 });
 

@@ -6,37 +6,45 @@ const Task = require("./Task");
 
 const { Schema } = mongoose;
 
-const User = new Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("Email is Invalid");
+const User = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Email is Invalid");
+        }
       }
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true
+        }
+      }
+    ],
+    avatar: {
+      type: Buffer
     }
   },
-  password: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true
-      }
-    }
-  ]
-});
+  {
+    timestamps: true
+  }
+);
 
 // Virtual Property
 User.virtual("tasks", {
@@ -50,6 +58,7 @@ User.methods.toJSON = function() {
   const userObject = user.toObject();
   delete userObject.password;
   delete userObject.tokens;
+  delete userObject.avatar;
   return userObject;
 };
 

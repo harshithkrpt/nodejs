@@ -1,6 +1,4 @@
 const express = require("express");
-
-// Routes for User and Task
 const taskRoute = require("./routes/task");
 const userRoute = require("./routes/user");
 

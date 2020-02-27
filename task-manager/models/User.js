@@ -65,7 +65,10 @@ User.methods.toJSON = function() {
 User.methods.generateAuthToken = async function() {
   const user = this;
 
-  const token = jwt.sign({ _id: user.id.toString() }, "privatekey");
+  const token = jwt.sign(
+    { _id: user.id.toString() },
+    process.env.JSON_WEB_TOKEN
+  );
 
   // Store in Tokens Database
   user.tokens = user.tokens.concat({ token });

@@ -3,6 +3,7 @@ const User = require("../models/User");
 const auth = require("../middleware/auth");
 const multer = require("multer");
 
+const { sendWelcomeEmail, sendGoodByeEmail } = require("../emails/accounts");
 const router = new express.Router();
 
 // Multer Configuration
@@ -24,6 +25,7 @@ router.post("/users", async (req, res) => {
     const token = await user.generateAuthToken();
 
     await user.save();
+    sendWelcomeEmail(user.email, user.name);
     res.status(201).send({ user, token });
   } catch (e) {
     res.status(400).send(e);
@@ -96,6 +98,7 @@ router.delete("/users/me", auth, async (req, res) => {
   try {
     await req.user.remove();
     res.send(req.user);
+    sendGoodByeEmail(req.user.email, req.user.name);
   } catch (e) {
     res.status(500).send(e);
   }

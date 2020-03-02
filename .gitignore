@@ -110,3 +110,6 @@ dist
 .vscode-test
 
 fixtures
+
+# Store
+.DS_Store

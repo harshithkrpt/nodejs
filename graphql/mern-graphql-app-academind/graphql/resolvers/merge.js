@@ -15,6 +15,11 @@ const userLoader = new DataLoader(userIds => {
 const events = async eventIds => {
   try {
     const fetchedEvents = await Event.find({ _id: { $in: eventIds } });
+    fetchedEvents.sort((a, b) => {
+      return (
+        eventIds.indexOf(a._id.toString()) - eventIds.indexOf(b._id.toString())
+      );
+    });
     return fetchedEvents.map(event => {
       return transformEvent(event);
     });

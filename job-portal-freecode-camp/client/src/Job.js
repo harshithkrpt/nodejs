@@ -4,10 +4,11 @@ import Typography from "@material-ui/core/Typography";
 function Job({ job }) {
   return (
     <div className="job">
-      <Typography variant="p">
-        {job.title}
-        {job.company}
-      </Typography>
+      <div>
+        <Typography>{job.title}</Typography>
+        <Typography>{job.company}</Typography>
+        <Typography>{job.location}</Typography>
+      </div>
     </div>
   );
 }

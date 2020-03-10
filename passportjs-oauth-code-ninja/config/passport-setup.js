@@ -1,5 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20");
+// Github Strategy
+const GithubStrategy = require("passport-github").Strategy;
 
 const User = require("../models/User");
 
@@ -11,6 +13,7 @@ passport.serializeUser((user, done) => {
 // deserialize user
 passport.deserializeUser(async (id, done) => {
   const user = await User.findById(id);
+
   if (user) {
     done(null, user);
   }
@@ -24,6 +27,29 @@ passport.use(
       // options for the google strategy
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      // passport callback function
+      let user = await User.findOne({ googleId: profile.id });
+      if (!user) {
+        user = new User({
+          username: profile.displayName,
+          googleId: profile.id
+        });
+        user = await user.save();
+      }
+      done(null, user);
+    }
+  )
+);
+
+// passport Using Github Strategy
+passport.use(
+  new GithubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: "/auth/github/redirect"
     },
     async (accessToken, refreshToken, profile, done) => {
       // passport callback function

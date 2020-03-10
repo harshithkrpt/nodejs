@@ -12,6 +12,17 @@ router.get(
   })
 );
 
+router.get("/github", passport.authenticate("github"));
+
+// github callback route
+router.get(
+  "/github/redirect",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  (req, res) => {
+    res.redirect("/profile");
+  }
+);
+
 // call back route
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
   res.redirect("/profile");

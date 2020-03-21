@@ -5,6 +5,7 @@
   "main": "1-hello-world.js",
   "dependencies": {
     "chalk": "^3.0.0",
+    "events": "^3.1.0",
     "express": "^4.17.1",
     "progress": "^2.0.3"
   },

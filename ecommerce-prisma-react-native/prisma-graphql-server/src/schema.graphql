@@ -1,3 +1,5 @@
+scalar Upload
+
 type Query {
   feed: [Post!]!
   drafts: [Post!]!
@@ -6,9 +8,11 @@ type Query {
 }
 
 type Mutation {
+  refreshToken(token: String!): String!
   signup(email: String!, password: String!, name: String!): AuthPayload!
   login(email: String!, password: String!): LoginResponse!
   createDraft(title: String!, content: String!): Post!
+  createProduct(name: String!, price: Float!, picture: Upload!): Product!
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
 }
@@ -17,19 +21,29 @@ type Subscription {
   feedSubscription: Post
 }
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Product {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  pictureUrl: String!
+  price: Float!
+  seller: User!
+}
+
 type Error {
   field: String!
   msg: String!
 }
 
 type LoginResponse {
-  payload: AuthPayload
   error: Error
-}
-
-type AuthPayload {
-  token: String!
-  user: User!
+  payload: AuthPayload
 }
 
 type User {

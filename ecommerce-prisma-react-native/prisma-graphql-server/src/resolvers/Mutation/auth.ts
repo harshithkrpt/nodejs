@@ -1,6 +1,6 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { Context } from "../../utils";
+import { Context, createToken, getUserId } from "../../utils";
 
 export const auth = {
   async signup(parent, args, ctx: Context) {
@@ -8,9 +8,14 @@ export const auth = {
     const user = await ctx.prisma.createUser({ ...args, password });
 
     return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+      token: createToken(user.id),
       user,
     };
+  },
+
+  async refreshToken(parent, { token }, ctx: Context) {
+    const userId = getUserId(ctx, token);
+    return createToken(userId);
   },
 
   async login(parent, { email, password }, ctx: Context) {
@@ -19,7 +24,7 @@ export const auth = {
       return {
         error: {
           field: "email",
-          msg: "No User Found",
+          msg: "Invalid Email",
         },
       };
     }
@@ -35,8 +40,10 @@ export const auth = {
     }
 
     return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user,
+      payload: {
+        token: createToken(user.id),
+        user,
+      },
     };
   },
 };

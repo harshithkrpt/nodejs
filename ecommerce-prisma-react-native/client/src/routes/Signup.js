@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {AsyncStorage, Text, View, StyleSheet, Button} from 'react-native';
+import {Text, View, Button} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {useMutation} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import TextField from '../components/TextField';
+import {TOKEN_KEY} from '../constants';
 
 const SIGNUP_MUTATION = gql`
   mutation($email: String!, $password: String!, $name: String!) {
@@ -38,7 +40,7 @@ const Signup = (props) => {
       });
       return;
     }
-    AsyncStorage.setItem('@ecommerce/tokem', res.data.signup.token);
+    AsyncStorage.setItem(TOKEN_KEY, res.data.signup.token);
     props.history.push('/products');
   };
 
@@ -69,6 +71,7 @@ const Signup = (props) => {
           value={values.password}
           name="password"
           onChangeText={handleInputChange}
+          secureTextEntry
         />
         <Button
           disabled={loading}
@@ -78,7 +81,7 @@ const Signup = (props) => {
         <Text style={{textAlign: 'center'}}>Or</Text>
         <Button
           onPress={() => {
-            props.history.push('/');
+            props.history.push('/login');
           }}
           title="go to login"
         />

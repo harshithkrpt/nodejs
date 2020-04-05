@@ -9,7 +9,7 @@ type Post {
 }
 
 type User {
-  id: ID! @id
+  id: ID! @id @unique
   email: String! @unique
   password: String!
   name: String!

@@ -59,14 +59,11 @@ const NewProduct = (props) => {
   const handleSubmit = async () => {
     const {name, pictureUrl, price} = values;
 
-    const picture = [
-      new ReactNativeFile({
-        uri: pictureUrl,
-        type: 'image/png',
-        name: 'i-am-a-name',
-      }),
-    ];
-    console.log(picture);
+    const picture = new ReactNativeFile({
+      uri: pictureUrl,
+      type: 'image/jpeg',
+      name: 'image.jpg',
+    });
     let response;
     try {
       response = await newproduct({

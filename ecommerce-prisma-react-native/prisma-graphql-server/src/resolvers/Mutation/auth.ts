@@ -13,8 +13,8 @@ export const auth = {
     };
   },
 
-  async refreshToken(parent, { token }, ctx: Context) {
-    const userId = getUserId(ctx, token);
+  async refreshToken(parent, args, ctx: Context) {
+    const userId = getUserId(ctx);
     return createToken(userId);
   },
 

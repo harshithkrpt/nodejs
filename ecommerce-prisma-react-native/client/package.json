@@ -13,6 +13,7 @@
     "@apollo/react-hooks": "^3.1.4",
     "@react-native-community/async-storage": "^1.9.0",
     "apollo-client-preset": "^1.0.8",
+    "apollo-link-context": "^1.0.19",
     "apollo-upload-client": "^13.0.0",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",

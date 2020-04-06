@@ -7,8 +7,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {TOKEN_KEY} from '../constants';
 
 const REFRESH_TOKEN_MUTATION = gql`
-  mutation($token: String!) {
-    refreshToken(token: $token)
+  mutation {
+    refreshToken
   }
 `;
 
@@ -23,9 +23,7 @@ export default (props) => {
       }
       let response;
       try {
-        response = await refresh({
-          variables: {token},
-        });
+        response = await refresh();
       } catch (err) {
         props.history.push('/signup');
         return;

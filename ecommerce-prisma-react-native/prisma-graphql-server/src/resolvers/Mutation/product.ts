@@ -20,9 +20,8 @@ const processUpload = async (upload) => {
 
 export const product = {
   async createProduct(parent, { name, price, picture }, ctx: Context, info) {
-    // const userId = getUserId(ctx);
-    console.log(picture);
-    const userId = 1;
+    const userId = getUserId(ctx);
+    console.log(userId);
     return ctx.prisma.createProduct({
       name,
       price,

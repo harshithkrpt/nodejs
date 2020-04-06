@@ -6,7 +6,7 @@ import { DocumentNode } from "graphql";
 import {
   makePrismaClientClass,
   BaseClientOptions,
-  Model
+  Model,
 } from "prisma-client-lib";
 import { typeDefs } from "./prisma-schema";
 
@@ -1449,16 +1449,16 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "Post",
-    embedded: false
+    embedded: false,
   },
   {
     name: "User",
-    embedded: false
+    embedded: false,
   },
   {
     name: "Product",
-    embedded: false
-  }
+    embedded: false,
+  },
 ];
 
 /**
@@ -1468,6 +1468,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/public-riverbird-375/prisma-graphql-server/dev`
+  endpoint: `https://eu1.prisma.sh/public-riverbird-375/prisma-graphql-server/dev`,
 });
 export const prisma = new Prisma();

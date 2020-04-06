@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import TextField from '../components/TextField';
 import {TOKEN_KEY} from '../constants';
 
-const SIGNUP_MUTATION = gql`
+export const SIGNUP_MUTATION = gql`
   mutation($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
       token
